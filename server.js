@@ -23,7 +23,7 @@ app.use(express.json());
 app.use("/api", require("./routes/api-routes"));
 
 // html Routes
-app.use("/", require(""));
+app.use("/", require("./routes/html-routes"));
 
 // Listening to PORT
 app.listen(PORT, () => {
