@@ -47,11 +47,23 @@
 
     <!-- Jumbotron -->
     <div class="container">
-        <div class="jumbotron jumbotron-fluid">
+        <div class="jumbotron jumbotron-fluid text-white" style="background-color: teal">
             <div class="text-center container">
                 <h1 class="pt-5 display-4 font-weight-bold" style="font-family: 'Times New Roman', Times, serif;">Mongo
                     Scraper</h1>
                 <h3 class="lead pb-5" style="font-family: 'Times New Roman', Times, serif;">New York Times Edition</h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <button id="arts" class="btn btn-info">Arts</button>
+                <button id="home" class="btn btn-info">Home</button>
+                <button id="science" class="btn btn-info">Science</button>
+                <button id="us" class="btn btn-info">US</button>
+                <button id="world" class="btn btn-info">World</button>
             </div>
         </div>
     </div>
@@ -85,22 +97,33 @@
 
     <script>
         $(document).ready(function () {
-            $.ajax({
-                url: '/api/all',
-                method: 'GET'
-            }).then(res => {
-                res.forEach(article => {
-                    $('#articleContainer').append(`
-                    <div class="card mb-3">
-                        <div class="card-body">
-                            <h5><a href="#" class="link">${article.title}</a></h5>
-                            <p>${article.text}</p>
-                            <a href=${article._id}><button class="btn btn-primary"><i class="fas fa-plus"></i> Save Article</button>
-                        </div>
-                    </div>
-                `)
-                });
-            })
+
+            getAllArticles("arts");
+
+            function getAllArticles(category = "science") {
+                const apiKey = 'GtAZFbeMmDhB2G3BNnec7u7yPJdynO8e';
+
+                $.ajax({
+                    url: `https://api.nytimes.com/svc/topstories/v2/${category}.json?api-key=${apiKey}`,
+                    method: 'GET'
+                }).then(res => {
+                    const result = res.results
+                    console.log(result)
+
+                    result.forEach(article => {
+                        $('#articleContainer').append(`
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <h5><a href="#" class="link">${article.title}</a></h5>
+                                    <small><strong>${Date(article.published_date)}</strong></small><br /><br />
+                                    <p>${article.abstract}</p>
+                                    <a href=${article._id}><button class="btn btn-primary"><i class="fas fa-plus"></i> Save Article</button>
+                                </div>
+                            </div>
+                        `)
+                    });
+                })
+            }
         })
     </script>
 </body>

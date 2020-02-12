@@ -9,8 +9,12 @@ const articleSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    link: {
+    url: {
         type: String
+    },
+    published_date: {
+        type: Date,
+        required: true
     }
 });
 
