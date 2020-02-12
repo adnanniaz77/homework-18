@@ -98,9 +98,18 @@
     <script>
         $(document).ready(function () {
 
+            // get all the articles from API
             getAllArticles("arts");
 
-            function getAllArticles(category = "science") {
+            // get the articles by Buttons
+            $('#arts').on('click', function () { $('#articleContainer').empty(); getAllArticles("arts"); })
+            $('#home').on('click', function () { getAllArticles("home"); $('#articleContainer').empty(); })
+            $('#science').on('click', function () { getAllArticles("science"); $('#articleContainer').empty(); })
+            $('#us').on('click', function () { getAllArticles("us"); $('#articleContainer').empty(); })
+            $('#world').on('click', function () { getAllArticles("world"); $('#articleContainer').empty(); })
+
+            // function to get all the article from API
+            function getAllArticles(category) {
                 const apiKey = 'GtAZFbeMmDhB2G3BNnec7u7yPJdynO8e';
 
                 $.ajax({
@@ -108,20 +117,20 @@
                     method: 'GET'
                 }).then(res => {
                     const result = res.results
-                    console.log(result)
 
-                    result.forEach(article => {
+                    for (let i = 0; i < 11; i++) {
+                        console.log(result[i])
                         $('#articleContainer').append(`
                             <div class="card mb-3">
                                 <div class="card-body">
-                                    <h5><a href="#" class="link">${article.title}</a></h5>
-                                    <small><strong>${Date(article.published_date)}</strong></small><br /><br />
-                                    <p>${article.abstract}</p>
-                                    <a href=${article._id}><button class="btn btn-primary"><i class="fas fa-plus"></i> Save Article</button>
+                                    <h5><a href="#" class="link">${result[i].title}</a></h5>
+                                    <small><strong>${Date(result[i].published_date)}</strong></small><br /><br />
+                                    <p>${result[i].abstract}</p>
+                                    <a href=${result[i]._id}><button class="btn btn-primary"><i class="fas fa-plus"></i> Save Article</button>
                                 </div>
                             </div>
                         `)
-                    });
+                    }
                 })
             }
         })
